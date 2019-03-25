@@ -1,0 +1,33 @@
+@import '../../global_variables/variables';
+
+.header-container{
+    background-color: $primary;
+    height: 70px;
+      a {
+      color: $white;
+      display: block;
+      &:hover {
+        text-decoration: none;
+        background-color: #0000000d;
+      } 
+    }
+};
+.navbar-list{
+  list-style-type: none;
+  li {
+    font-size: 17px;
+   
+    a {
+      color: $white;
+      display: block;
+      &:hover {
+        text-decoration: none;
+        background-color: #0000000d;
+      } 
+    }
+    .active-link {
+      color: $white;
+      font-weight: 600;
+    }
+  }
+}
