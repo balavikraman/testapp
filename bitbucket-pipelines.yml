@@ -14,10 +14,6 @@ pipelines:
         script: # Modify the commands below to build your repository.
          - npm install
 
-         - cd angular-src && npm install @angular-devkit/build-angular
-
-         - npm install @angular-devkit/build-optimizer
-
          - npm install -g @angular/cli
 
           - git commit
