@@ -7,8 +7,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "heroku-postbuild": "ng build --prod"
+    "e2e": "ng e2e"
   },
   "engines": {
     "node": "10.5.0",
@@ -19,8 +18,7 @@
   "dependencies": {
     "@angular/animations": "~7.2.0",
     "@angular/common": "~7.2.0",
-    "@angular/cli": "~7.3.5",
-    "@angular/compiler-cli": "~7.2.0",
+    "@angular/compiler": "~7.2.0",
     "@angular/core": "~7.2.0",
     "@angular/forms": "~7.2.0",
     "@angular/platform-browser": "~7.2.0",
@@ -35,8 +33,7 @@
     "popper.js": "^1.14.7",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
-    "zone.js": "~0.8.26",
-    "typescript": "~3.2.2"
+    "zone.js": "~0.8.26"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.13.0",
