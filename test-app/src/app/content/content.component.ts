@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/observable';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/take';
 import { Pipe, PipeTransform } from '@angular/core';
+import { Observable, interval, defer, BehaviorSubject } from 'rxjs';
+import { mapTo, reduce, take, tap, filter, map, share, withLatestFrom } from 'rxjs/operators'
 
 
 @Component({
@@ -13,18 +14,15 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ContentComponent implements OnInit {
 
-
   constructor() { }
-  countDown;
   counter = 1000;
   tick = 1000;
-  public pauseTimer = false;
   public Questions;
   public Options;
   public activeQueryNumber;
   public questionStartNumber = 0;
   public markedForReviewList = [];
-
+  public timer;
 
   buttonNumber = [];
   quesList = [
@@ -36,7 +34,6 @@ export class ContentComponent implements OnInit {
         'Option 1 B',
         'Option 1 C',
         'Option 1 D',
-
       ]
     },
     {
@@ -47,7 +44,6 @@ export class ContentComponent implements OnInit {
         'Option 2 B',
         'Option 2 C',
         'Option 2 D',
-
       ]
     },
     {
@@ -81,14 +77,18 @@ export class ContentComponent implements OnInit {
         ]
     }
   ];
+
   ngOnInit() {
     this.Questions = this.quesList[0];
     this.Options = this.quesList[0].options;
     this.activeQueryNumber = 1;
-
-
-    this.countDown = Observable.timer(0, this.tick).take(this.counter).map(() => --this.counter);
+    this.startTimer();
   }
+
+    startTimer() {
+      const subject = new BehaviorSubject<boolean>(false);
+      this.timer = {paused: subject, timerObject: this.getPausableTimer(this.counter, subject)};
+    }
 
     prev() {
       --this.questionStartNumber;
@@ -114,8 +114,16 @@ export class ContentComponent implements OnInit {
       this.next();
     }
 
-    pauseTime() {
-      // this.countDown = Observable.timer(0, this.tick).take(this.counter).map(() => --this.counter);
+    getPausableTimer(timeout: number, pause: BehaviorSubject<boolean>): { stepTimer: Observable<any>, completeTimer: Observable<any> } {
+      const pausableTimer$ = defer(() => {
+        return interval(this.tick).pipe(
+          withLatestFrom(pause),
+          filter(([v, paused]) => !paused),
+          take(timeout),
+          map(() => --this.counter)
+        );
+      }).pipe(share());
+      return { stepTimer: pausableTimer$, completeTimer: pausableTimer$.pipe(reduce((x, y) => y)) };
     }
 }
 
